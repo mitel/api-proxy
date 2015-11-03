@@ -27,7 +27,7 @@ var routes = Array.prototype.concat.apply([], [
     restRoutes, falcorRoutes
 ]);
 
-var portnumber = process.env.VCAP_APP_PORT || 8080;
+var portnumber = process.env.VCAP_APP_PORT || 8088;
 
 server.register( require('inert'), function (err) {
 
