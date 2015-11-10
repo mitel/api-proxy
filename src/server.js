@@ -38,7 +38,7 @@ server.register( require('inert'), function (err) {
   if (!err && !module.parent) {
     if (!err) {
       server.start(function () {
-        console.log('hapi.js server running at:', server.info.uri);
+        console.log('[node.js] API proxy server running at:', server.info.uri);
       });
     }
   }
