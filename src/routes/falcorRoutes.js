@@ -40,7 +40,7 @@ module.exports = [
             };
           },
         },
-        {
+        { // just for testing - pls call session.login
           route: 'authToken',
           async get() {
             console.log('.. call to get an auth token');
@@ -63,21 +63,21 @@ module.exports = [
         {
           route: 'session.login',
           async call(callPath, args) {
-            console.log('.. call to login ..');
+            console.log('.. call to login ..'); 
             let session;
             const [ username, password ] = args;
             
             try {
               session = await sdk.login(username, password);
+              console.log('session created: ' + session.authToken);
+              return [
+                { path: ['authToken'], value: session.authToken},
+                { path: ['serviceProvider'], value: session.serviceProviderId },
+              ];
             } catch (err) {
-              console.log(err);
+              console.log('Error occured..');
               throw new Error(err);
             } 
-
-            return [
-              { path: ['authToken'], value: session.authToken},
-              { path: ['serviceProvider'], value: session.serviceProviderId },
-            ];
           },
         }, 
 
@@ -88,7 +88,6 @@ module.exports = [
             console.log('.. call to create a resource pool');
             let resourcePool;
             const [ authToken, serviceProviderId, resourcePoolName] = args;
-            // console.log(args);
 
             // prepare the parameter for the sdk call..
             const resourcePoolConfig = {
@@ -96,17 +95,16 @@ module.exports = [
             };
 
             try {
-              // console.log(authToken);
               resourcePool = await sdk.createResourcePool(authToken, serviceProviderId, resourcePoolConfig);
+              console.log('created resource pool: ' + resourcePool.resourcePoolId);
+              return {
+                path: ['resourcePool'],
+                value: resourcePool.resourcePoolId,
+              };
             } catch (err) {
               console.log(err);
               throw new Error(err);
             } 
-
-            return {
-              path: ['resourcePool'],
-              value: resourcePool.resourcePoolId,
-            };
           },
         },
       ]);
